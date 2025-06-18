@@ -13,3 +13,5 @@ class Lesson(Base):
     course_id = Column(Integer, ForeignKey("courses.id"), nullable=False)
 
     course = relationship("Course", back_populates="lessons")
+    
+

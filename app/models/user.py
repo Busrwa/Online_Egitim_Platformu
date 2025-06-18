@@ -1,7 +1,7 @@
-# app/models/user.py
 from sqlalchemy import Column, Integer, String
-from app.db.base import Base
 from sqlalchemy.orm import relationship
+from app.db.base import Base
+from app.models.user_course import user_course  # burayı ekle
 
 class User(Base):
     __tablename__ = "users"
@@ -10,4 +10,13 @@ class User(Base):
     name = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)
+
+    # Eğitmen olarak oluşturduğu kurslar
     courses = relationship("Course", back_populates="instructor")
+
+    # Öğrenci olarak kayıtlı olduğu kurslar (many-to-many)
+    enrolled_courses = relationship(
+        "Course",
+        secondary=user_course,
+        back_populates="students"
+    )

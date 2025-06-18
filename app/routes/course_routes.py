@@ -16,11 +16,14 @@ def get_courses():
             "id": c.id,
             "title": c.title,
             "description": c.description,
-            #"category": c.category.name if c.category else None,
+            "category": c.category.name if c.category else None,
             "instructor": c.instructor.name if c.instructor else None,
+            "students": [student.name for student in c.students],  # öğrencilerin isimleri listesi
+            "lessons": [{"id": lesson.id, "title": lesson.title} for lesson in c.lessons],  # derslerin kısa bilgisi
         })
     db.close()
     return jsonify(result)
+
 
 @router.route("/", methods=["POST"])
 def create_course():
@@ -29,7 +32,7 @@ def create_course():
     new_course = Course(
         title=data.get("title"),
         description=data.get("description"),
-        #category_id=data.get("category_id"),
+        category_id=data.get("category_id"),
         user_id=data.get("user_id"),
     )
     db.add(new_course)
